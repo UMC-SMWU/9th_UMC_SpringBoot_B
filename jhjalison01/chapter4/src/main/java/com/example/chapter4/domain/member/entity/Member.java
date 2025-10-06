@@ -54,7 +54,6 @@ public class Member extends BaseEntity {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private Status status;
 
     @Column(name = "inactive_data", nullable = false)

@@ -1,6 +1,5 @@
 package com.example.chapter4.domain.mission.entity.mapping;
 
-import com.example.chapter4.domain.member.entity.Food;
 import com.example.chapter4.domain.member.entity.Member;
 import com.example.chapter4.domain.mission.entity.Mission;
 import jakarta.persistence.*;

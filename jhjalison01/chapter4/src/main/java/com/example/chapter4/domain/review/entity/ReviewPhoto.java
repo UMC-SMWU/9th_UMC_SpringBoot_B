@@ -1,6 +1,5 @@
 package com.example.chapter4.domain.review.entity;
 
-import com.example.chapter4.domain.store.entity.Store;
 import com.example.chapter4.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +19,6 @@ public class ReviewPhoto extends BaseEntity {
     private String photoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "review_id")
+    private Review review;
 }

@@ -1,7 +1,6 @@
 package com.example.chapter4.domain.store.entity;
 
 import com.example.chapter4.domain.mission.entity.Mission;
-import com.example.chapter4.domain.review.entity.Reply;
 import com.example.chapter4.domain.review.entity.Review;
 import com.example.chapter4.global.entity.BaseEntity;
 import jakarta.persistence.*;
