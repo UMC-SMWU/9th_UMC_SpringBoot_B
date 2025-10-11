@@ -55,6 +55,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String socialId; // OAuth UID
 
+    @Column(nullable = false, length = 100, unique = true)
+    private String email;
+
     @Column(nullable = false, length = 15)
     private String phoneNumber;
 
@@ -63,13 +66,6 @@ public class Member extends BaseEntity {
 
     private LocalDateTime deletedAt;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     // 1:N
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)

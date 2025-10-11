@@ -23,6 +23,4 @@ public abstract class BaseEntity {
     @Column(name = "Updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
