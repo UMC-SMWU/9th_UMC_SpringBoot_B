@@ -49,6 +49,9 @@ public class Member extends BaseEntity {
     @Column(name = "point", nullable = false)
     private int point;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "phone_num", nullable = false)
     private String phoneNum;
 
