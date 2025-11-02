@@ -24,10 +24,10 @@ public class Review extends BaseEntity {
     private Long id;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating;  // 1~5 권장 (서비스/DTO 레벨에서 검증)
+    private Float rating;
 
     @Column(name = "content", length = 500)
-    private String content;  // 선택 입력
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,7 +38,7 @@ public class Review extends BaseEntity {
     private Store store;
 
     @Builder
-    public Review(Integer rating, String content, User writer, Store store) {
+    public Review(Float rating, String content, User writer, Store store) {
         this.rating = rating;
         this.content = content;
         this.writer = writer;
