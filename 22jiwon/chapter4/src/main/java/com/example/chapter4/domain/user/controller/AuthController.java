@@ -8,9 +8,9 @@ import com.example.chapter4.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import com.example.chapter4.global.apiPayload.ApiResponse;
+import com.example.chapter4.global.apiPayload.code.GeneralSuccessCode;
 
 import jakarta.validation.Valid;
 
@@ -21,14 +21,18 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserSignupResponse> signup(@RequestBody @Valid UserSignupRequest request) {
+    // 1. 반환 타입 변경
+    public ApiResponse<UserSignupResponse> signup(@RequestBody @Valid UserSignupRequest request) {
         UserSignupResponse response = userService.signup(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        // 2. ApiResponse.onSuccess 사용 (CREATED 코드 사용)
+        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request) {
+    // 1. 반환 타입 변경
+    public ApiResponse<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest request) {
         UserLoginResponse response = userService.login(request);
-        return ResponseEntity.ok(response);
+        // 2. ApiResponse.onSuccess 사용 (OK 코드 사용)
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, response);
     }
 }
