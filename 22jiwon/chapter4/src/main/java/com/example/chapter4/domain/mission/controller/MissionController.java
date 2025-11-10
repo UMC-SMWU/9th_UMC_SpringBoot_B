@@ -2,7 +2,10 @@ package com.example.chapter4.domain.mission.controller;
 
 import com.example.chapter4.domain.mission.dto.MissionListResponseDto;
 import com.example.chapter4.domain.mission.dto.MissionResponseDto;
+import com.example.chapter4.domain.mission.dto.UserMissionChallengeRequestDto;
+import com.example.chapter4.domain.mission.dto.UserMissionChallengeResponseDto;
 import com.example.chapter4.domain.mission.service.MissionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.example.chapter4.global.apiPayload.ApiResponse;
@@ -24,5 +27,17 @@ public class MissionController {
     @GetMapping("/{missionId}")
     public ApiResponse<MissionResponseDto> getMission(@PathVariable Long missionId) {
         return ApiResponse.onSuccess(GeneralSuccessCode.OK, missionService.getMission(missionId));
+    }
+
+    @PostMapping("/{missionId}/challenge")
+    public ApiResponse<UserMissionChallengeResponseDto> challengeMission(
+            @PathVariable Long missionId,
+            @RequestBody @Valid UserMissionChallengeRequestDto request
+    ) {
+        // request에 missionId가 없다면 아래 한 줄 추가
+        request.setMissionId(missionId);
+        Long userId = 1L; // 인증연동 전 임시 하드코딩
+        UserMissionChallengeResponseDto response = missionService.challengeMission(request, userId);
+        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, response);
     }
 }

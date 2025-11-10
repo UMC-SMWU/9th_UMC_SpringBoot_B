@@ -35,13 +35,27 @@ public class UserMissionCompletion extends BaseEntity {
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
 
-    @Column(name = "completed_at", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserMissionStatus status;
+
+    @Column(name = "challenged_at", nullable = false)
+    private LocalDateTime challengedAt;
+
+    @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
     @Builder
-    public UserMissionCompletion(User user, Mission mission, LocalDateTime completedAt) {
+    public UserMissionCompletion(User user, Mission mission, UserMissionStatus status, LocalDateTime challengedAt, LocalDateTime completedAt) {
         this.user = user;
         this.mission = mission;
+        this.status = status;
+        this.challengedAt = challengedAt;
         this.completedAt = completedAt;
+    }
+
+    public void completeMission() {
+        this.status = UserMissionStatus.COMPLETED;
+        this.completedAt = LocalDateTime.now();
     }
 }
