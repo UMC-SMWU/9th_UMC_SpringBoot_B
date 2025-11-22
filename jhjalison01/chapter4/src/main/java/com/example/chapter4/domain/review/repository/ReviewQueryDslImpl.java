@@ -1,6 +1,6 @@
 package com.example.chapter4.domain.review.repository;
 
-import com.example.chapter4.domain.review.dto.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
 import com.example.chapter4.domain.review.entity.QReview;
 import com.example.chapter4.domain.review.entity.Review;
@@ -9,14 +9,8 @@ import com.example.chapter4.domain.store.entity.QStore;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
@@ -44,7 +38,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     }
 
     @Override
-    public List<ReviewResponseDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition) {
+    public List<ReviewResponseDto.ReviewDetailDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition) {
 
         QReview review = QReview.review;
         QStore store = QStore.store;
@@ -66,7 +60,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
         return queryFactory
                 .select(Projections.constructor(
-                                ReviewResponseDto.class,
+                                ReviewResponseDto.ReviewDetailDto.class,
                                 review.id,
                                 review.store.id,
                                 review.rating,
