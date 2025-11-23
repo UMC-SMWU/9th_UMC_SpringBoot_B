@@ -2,10 +2,12 @@ package com.example.chapter4.domain.review.dto.res;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-public class ReviewResponseDto {
+public class ReviewResDto {
 
     @Builder
     @Getter
@@ -27,4 +29,22 @@ public class ReviewResponseDto {
         private int rating;
         private LocalDateTime createdAt;
     }
+
+    @Builder
+    public record ReviewPreViewListDto(
+            List<ReviewPreViewDto> reviewList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ){}
+
+    @Builder
+    public record ReviewPreViewDto(
+            String ownerNickname,
+            Float score,
+            String body,
+            LocalDate createdAt
+    ){}
 }

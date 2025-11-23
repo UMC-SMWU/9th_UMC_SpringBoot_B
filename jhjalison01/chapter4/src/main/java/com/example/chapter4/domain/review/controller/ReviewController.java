@@ -1,11 +1,11 @@
 package com.example.chapter4.domain.review.controller;
 
 import com.example.chapter4.domain.review.dto.req.ReviewRequestDto;
-import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.res.ReviewResDto;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
 import com.example.chapter4.domain.review.entity.Review;
-import com.example.chapter4.domain.review.service.command.ReviewCommandServiceImpl;
-import com.example.chapter4.domain.review.service.query.ReviewQueryServiceImpl;
+import com.example.chapter4.domain.review.service.command.ReviewCommandService;
+import com.example.chapter4.domain.review.service.query.ReviewQueryService;
 import com.example.chapter4.global.apiPayLoad.ApiResponse;
 import com.example.chapter4.global.apiPayLoad.code.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
@@ -16,30 +16,41 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/reviews")
-public class ReviewController {
+public class ReviewController implements ReviewControllerDocs{
 
-    private final ReviewCommandServiceImpl reviewCommandServiceImpl;
-    private final ReviewQueryServiceImpl reviewQueryServiceImpl;
+    private final ReviewCommandService reviewCommandService;
+    private final ReviewQueryService reviewQueryService;
 
     @GetMapping("member/{memberId}")
-    public ApiResponse<List<ReviewResponseDto.ReviewDetailDto>> getMyReviews(
+    public ApiResponse<List<ReviewResDto.ReviewDetailDto>> getMyReviews(
             @PathVariable Long memberId,
             @ModelAttribute ReviewSearchCondition condition // Query Parameter를 DTO로 바인딩
     ) {
 
-        List<ReviewResponseDto.ReviewDetailDto> reviews = reviewQueryServiceImpl.getMemberReviews(memberId, condition);
+        List<ReviewResDto.ReviewDetailDto> reviews = reviewQueryService.getMemberReviews(memberId, condition);
         return ApiResponse.onSuccess(GeneralSuccessCode.OK,reviews);
     }
 
     @PostMapping()
-    public ApiResponse<ReviewResponseDto.CreateResultDto> createReview(@RequestBody ReviewRequestDto.CreateDto request) {
-        Review review = reviewCommandServiceImpl.createReview(request,1L); //memberId를 1로 하드코딩
-        ReviewResponseDto.CreateResultDto result = ReviewResponseDto.CreateResultDto.builder()
+    public ApiResponse<ReviewResDto.CreateResultDto> createReview(@RequestBody ReviewRequestDto.CreateDto request) {
+        Review review = reviewCommandService.createReview(request,1L); //memberId를 1로 하드코딩
+        ReviewResDto.CreateResultDto result = ReviewResDto.CreateResultDto.builder()
                 .reviewId(review.getId())
                 .createdAt(review.getCreatedAt())
                 .build();
 
         return ApiResponse.onSuccess(GeneralSuccessCode.OK,result);
+    }
+
+    // 가게의 리뷰 목록 조회
+    @GetMapping()
+    public ApiResponse<ReviewResDto.ReviewPreViewListDto> getReviews(
+            @RequestParam String storeName,
+            @RequestParam(defaultValue = "1") Integer page
+    ){
+
+        //ReviewSuccessCode code = ReviewSuccessCode.FOUND;
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, reviewQueryService.findReview(storeName,page));
     }
 
 }

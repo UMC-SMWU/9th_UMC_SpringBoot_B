@@ -1,20 +1,22 @@
 package com.example.chapter4.domain.review.service.query;
 
 
-import com.example.chapter4.domain.member.entity.Member;
-import com.example.chapter4.domain.member.repository.MemberRepository;
+import com.example.chapter4.domain.review.converter.ReviewConverter;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
-import com.example.chapter4.domain.review.dto.req.ReviewRequestDto;
-import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.res.ReviewResDto;
 import com.example.chapter4.domain.review.entity.QReview;
 import com.example.chapter4.domain.review.entity.Review;
 import com.example.chapter4.domain.review.repository.ReviewRepository;
 import com.example.chapter4.domain.store.entity.QLocation;
 import com.example.chapter4.domain.store.entity.Store;
+import com.example.chapter4.domain.store.exception.StoreException;
+import com.example.chapter4.domain.store.exception.code.StoreErrorCode;
 import com.example.chapter4.domain.store.repository.StoreRepository;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
 @Transactional
 public class ReviewQueryServiceImpl implements ReviewQueryService { //GET 요청 전용 service
     private final ReviewRepository reviewRepository;
+    private final StoreRepository storeRepository;
 
     @Override
     public List<Review> searchReview(String query, String type){
@@ -52,7 +55,21 @@ public class ReviewQueryServiceImpl implements ReviewQueryService { //GET 요청
         return reviewList;
     }
 
-    public List<ReviewResponseDto.ReviewDetailDto> getMemberReviews(Long memberId, ReviewSearchCondition condition) {
+    public List<ReviewResDto.ReviewDetailDto> getMemberReviews(Long memberId, ReviewSearchCondition condition) {
         return reviewRepository.searchMemberReviews(memberId, condition);
+    }
+
+    @Override
+    public ReviewResDto.ReviewPreViewListDto findReview(String storeName, Integer page){
+        Store store = storeRepository.findByName(storeName)
+                .orElseThrow(()-> new StoreException(StoreErrorCode.NOT_FOUND));
+
+        //- 가게에 맞는 리뷰를 가져온다 (Offset 페이징)
+        PageRequest pageRequest = PageRequest.of(page, 5);
+        Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
+
+        //- 결과를 응답 DTO로 변환한다 (컨버터 이용)
+        return ReviewConverter.toReviewPreviewListDTO(result);
+
     }
 }

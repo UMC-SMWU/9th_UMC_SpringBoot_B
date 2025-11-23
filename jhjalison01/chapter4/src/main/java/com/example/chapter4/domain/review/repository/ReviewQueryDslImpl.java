@@ -1,6 +1,6 @@
 package com.example.chapter4.domain.review.repository;
 
-import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.res.ReviewResDto;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
 import com.example.chapter4.domain.review.entity.QReview;
 import com.example.chapter4.domain.review.entity.Review;
@@ -38,7 +38,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     }
 
     @Override
-    public List<ReviewResponseDto.ReviewDetailDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition) {
+    public List<ReviewResDto.ReviewDetailDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition) {
 
         QReview review = QReview.review;
         QStore store = QStore.store;
@@ -60,7 +60,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
         return queryFactory
                 .select(Projections.constructor(
-                                ReviewResponseDto.ReviewDetailDto.class,
+                                ReviewResDto.ReviewDetailDto.class,
                                 review.id,
                                 review.store.id,
                                 review.rating,

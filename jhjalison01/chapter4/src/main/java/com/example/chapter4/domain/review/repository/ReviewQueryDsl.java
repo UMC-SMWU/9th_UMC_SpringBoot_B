@@ -1,6 +1,6 @@
 package com.example.chapter4.domain.review.repository;
 
-import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.res.ReviewResDto;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
 import com.example.chapter4.domain.review.entity.Review;
 import com.querydsl.core.types.Predicate;
@@ -14,5 +14,5 @@ public interface ReviewQueryDsl {
             Predicate predicate
     );
 
-    List<ReviewResponseDto.ReviewDetailDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition);
+    List<ReviewResDto.ReviewDetailDto> searchMemberReviews(Long memberId, ReviewSearchCondition condition);
 }

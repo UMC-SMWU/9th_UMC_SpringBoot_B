@@ -6,22 +6,14 @@ import com.example.chapter4.domain.member.exception.code.MemberErrorCode;
 import com.example.chapter4.domain.member.repository.MemberRepository;
 import com.example.chapter4.domain.review.converter.ReviewConverter;
 import com.example.chapter4.domain.review.dto.req.ReviewRequestDto;
-import com.example.chapter4.domain.review.dto.res.ReviewResponseDto;
-import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
-import com.example.chapter4.domain.review.entity.QReview;
 import com.example.chapter4.domain.review.entity.Review;
 import com.example.chapter4.domain.review.repository.ReviewRepository;
-import com.example.chapter4.domain.store.entity.QLocation;
 import com.example.chapter4.domain.store.entity.Store;
 import com.example.chapter4.domain.store.exception.StoreException;
 import com.example.chapter4.domain.store.exception.code.StoreErrorCode;
 import com.example.chapter4.domain.store.repository.StoreRepository;
-import com.example.chapter4.global.apiPayLoad.exception.GeneralException;
-import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
