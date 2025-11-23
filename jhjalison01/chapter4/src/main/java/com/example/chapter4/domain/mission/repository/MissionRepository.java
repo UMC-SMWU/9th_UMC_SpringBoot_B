@@ -1,7 +1,7 @@
 package com.example.chapter4.domain.mission.repository;
 
-import com.example.chapter4.domain.member.entity.Member;
 import com.example.chapter4.domain.mission.dto.ChallengeableMissionDto;
+import com.example.chapter4.domain.mission.entity.Mission;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MissionRepository extends JpaRepository<Member,Long> {
+public interface MissionRepository extends JpaRepository<Mission,Long> {
 
     //도전 가능한 미션 조회 (페이징)
     @Query("SELECT new com.example.chapter4.domain.mission.dto.ChallengeableMissionDto(m.point, m.deadline, m.content, s.type, s.name) " +

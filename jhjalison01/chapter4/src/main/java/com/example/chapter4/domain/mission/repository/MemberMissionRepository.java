@@ -36,5 +36,8 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             @Param("lastCursorId") Long lastCursorId,
             Pageable pageable);
 
+    //중복 확인
+    boolean existsByMemberIdAndMissionId(Long memberId, Long missionId);
+
 
 }

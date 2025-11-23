@@ -1,4 +1,4 @@
-package com.example.chapter4.domain.mission.service;
+package com.example.chapter4.domain.mission.service.query;
 
 import com.example.chapter4.domain.mission.dto.ChallengeableMissionDto;
 import com.example.chapter4.domain.mission.dto.CompletedMissionDto;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MissionService {
+public class MissionQueryServiceImpl implements MissionQueryService {
     private final MemberMissionRepository memberMissionRepository;
     private final MissionRepository missionRepository;
 
