@@ -1,19 +1,23 @@
 package com.example.chapter4.domain.mission.dto;
 
 import com.example.chapter4.domain.mission.entity.Mission;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class MissionResponseDto {
-    private final Long id;
-    private final String name;
-    private final String description;
-    private final Integer pointAwarded;
-    private final LocalDateTime deadline;
-    private final Long storeId;
-    private final String storeName;
+    private Long id;
+    private String name;
+    private String description;
+    private Integer pointAwarded;
+    private LocalDateTime deadline;
+    private Long storeId;
+    private String storeName;
 
     public MissionResponseDto(Mission m) {
         this.id = m.getId();

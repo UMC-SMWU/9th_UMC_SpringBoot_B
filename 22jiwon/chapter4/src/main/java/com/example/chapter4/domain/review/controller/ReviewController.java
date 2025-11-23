@@ -1,13 +1,17 @@
 package com.example.chapter4.domain.review.controller;
 
-import com.example.chapter4.domain.review.dto.ReviewResponseDto;
+import com.example.chapter4.domain.review.dto.ReviewListResponseDto;
 import com.example.chapter4.domain.review.dto.ReviewRequestDto;
+import com.example.chapter4.domain.review.dto.ReviewResponseDto;
 import com.example.chapter4.domain.review.service.ReviewService;
-import lombok.RequiredArgsConstructor;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
+import com.example.chapter4.global.annotation.CheckPage;
 import com.example.chapter4.global.apiPayload.ApiResponse;
 import com.example.chapter4.global.apiPayload.code.GeneralSuccessCode;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,19 +19,50 @@ import java.util.List;
 @RequestMapping("/api/v1/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
+
     private final ReviewService reviewService;
 
     @GetMapping("/me")
     public ApiResponse<List<ReviewResponseDto>> getMyReviews(
             @RequestParam(required = false) String storeName,
-            @RequestParam(required = false) Integer rating) {
-        return ApiResponse.onSuccess(GeneralSuccessCode.OK, reviewService.getMyReviews(storeName, rating));
+            @RequestParam(required = false) Integer rating
+    ) {
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                reviewService.getMyReviews(storeName, rating)
+        );
+    }
+
+    @Operation(
+            summary = "내가 작성한 리뷰 목록 조회 (페이징)",
+            description = "로그인한 사용자가 작성한 리뷰를 10개 단위로 페이징 조회합니다."
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "page 오류")
+    })
+    @GetMapping("/me/paged")
+    public ApiResponse<ReviewListResponseDto> getMyReviewsPaged(
+            @CheckPage Integer page, // query string page 검증 + 0-based 변환
+            @RequestParam(required = false) String storeName,
+            @RequestParam(required = false) Integer rating
+    ) {
+        Long userId = 1L; // 기존 컨벤션 유지 (임시 하드코딩)
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.OK,
+                reviewService.getMyReviewsPaged(userId, storeName, rating, page)
+        );
     }
 
     @PostMapping
-    public ApiResponse<ReviewResponseDto> addReview(@RequestBody @Valid ReviewRequestDto request) {
+    public ApiResponse<ReviewResponseDto> addReview(
+            @RequestBody @Valid ReviewRequestDto request
+    ) {
         // 하드코딩 userId (인증 없이 임시로 1L로 지정 가능)
-        return ApiResponse.onSuccess(GeneralSuccessCode.CREATED, reviewService.addReview(request, 1L));
+        return ApiResponse.onSuccess(
+                GeneralSuccessCode.CREATED,
+                reviewService.addReview(request, 1L)
+        );
     }
     // 필요시 추가: 리뷰작성, 상세조회, 삭제 등
 }

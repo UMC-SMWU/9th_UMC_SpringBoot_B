@@ -21,6 +21,9 @@ public enum GeneralErrorCode implements BaseErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND,
             "COMMON404_1",
             "요청한 리소스를 찾을 수 없습니다."),
+    PAGE_VALIDATION_ERROR(HttpStatus.BAD_REQUEST,
+            "COMMON400_2",
+            "page는 1 이상이어야 합니다."),
 
     // 기타 서버 에러 (워크북에서 추가)
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
