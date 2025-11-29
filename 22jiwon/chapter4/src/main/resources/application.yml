@@ -18,6 +18,7 @@ spring:
       hibernate:
         format_sql: true
 
-  jwt:
-    secret: "MySecretKey123456789"
-    expiration: 3600000  # 1시간(ms)
+jwt:
+  secret: "this_is_a_very_long_jwt_secret_key_32_bytes_at_least!!"
+  access-token-expiration-ms: 3600000
+  refresh-token-expiration-ms: 86400000
