@@ -1,6 +1,10 @@
 package com.example.chapter4.domain.review.service.query;
 
 
+import com.example.chapter4.domain.member.entity.Member;
+import com.example.chapter4.domain.member.exception.MemberException;
+import com.example.chapter4.domain.member.exception.code.MemberErrorCode;
+import com.example.chapter4.domain.member.repository.MemberRepository;
 import com.example.chapter4.domain.review.converter.ReviewConverter;
 import com.example.chapter4.domain.review.dto.ReviewSearchCondition;
 import com.example.chapter4.domain.review.dto.res.ReviewResDto;
@@ -17,6 +21,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +32,7 @@ import java.util.List;
 public class ReviewQueryServiceImpl implements ReviewQueryService { //GET 요청 전용 service
     private final ReviewRepository reviewRepository;
     private final StoreRepository storeRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<Review> searchReview(String query, String type){
@@ -55,8 +61,17 @@ public class ReviewQueryServiceImpl implements ReviewQueryService { //GET 요청
         return reviewList;
     }
 
-    public List<ReviewResDto.ReviewDetailDto> getMemberReviews(Long memberId, ReviewSearchCondition condition) {
-        return reviewRepository.searchMemberReviews(memberId, condition);
+    public ReviewResDto.ReviewDetailListDto getMemberReviews(Long memberId, ReviewSearchCondition condition) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new MemberException(MemberErrorCode.NOT_FOUND));
+
+        int pageIndex = condition.getPage() - 1;
+        Pageable pageable = PageRequest.of(pageIndex, 10);
+
+        // Repository에서 Page<Review> 반환
+        Page<Review> reviewPage = reviewRepository.searchMemberReviews(memberId, condition, pageable);
+
+        return ReviewConverter.toReviewPreviewListDto(reviewPage);
     }
 
     @Override

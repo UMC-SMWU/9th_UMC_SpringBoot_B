@@ -26,8 +26,21 @@ public class ReviewResDto {
         private Long reviewId;
         private String storeName;
         private String content;
-        private int rating;
+        private Float rating;
         private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ReviewDetailListDto {
+        private List<ReviewDetailDto> reviewList;
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
     }
 
     @Builder

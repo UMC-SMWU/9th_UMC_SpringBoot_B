@@ -1,6 +1,5 @@
 package com.example.chapter4.domain.mission.dto.req;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,18 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class MemberMissionRequestDto {
-    @Getter
-    public static class CreateDto {
-        @NotNull
-        private Long missionId; // 어떤 미션에 도전할지 ID가 필요합니다.
-    }
-
+public class MissionResDto {
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MemberMissionDetailDto {
+    public static class MissionDetailDto {
         private Long missionId;
         private String storeName;
         private String content;
@@ -32,8 +25,8 @@ public class MemberMissionRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MemberMissionPreviewListDto {
-        private List<MemberMissionDetailDto> missionList;
+    public static class MissionPreviewListDto {
+        private List<MissionDetailDto> missionList;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;

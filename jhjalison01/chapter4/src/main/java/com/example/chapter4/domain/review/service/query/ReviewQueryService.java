@@ -9,7 +9,7 @@ import java.util.List;
 public interface ReviewQueryService {
     List<Review> searchReview(String query, String type);
 
-    List<ReviewResDto.ReviewDetailDto> getMemberReviews(Long memberId, ReviewSearchCondition condition);
+    ReviewResDto.ReviewDetailListDto getMemberReviews(Long memberId, ReviewSearchCondition condition);
 
     ReviewResDto.ReviewPreViewListDto findReview(String storeName, Integer page);
 }

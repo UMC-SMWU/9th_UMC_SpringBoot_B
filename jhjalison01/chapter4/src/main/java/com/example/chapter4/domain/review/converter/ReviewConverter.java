@@ -8,6 +8,8 @@ import com.example.chapter4.domain.store.entity.Store;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReviewConverter {
     public static Review toReview(Member member, Store store, ReviewRequestDto.CreateDto request) {
@@ -44,6 +46,31 @@ public class ReviewConverter {
                 .score(review.getRating())
                 .body(review.getContent())
                 .createdAt(LocalDate.from(review.getCreatedAt()))
+                .build();
+    }
+
+    public static ReviewResDto.ReviewDetailDto toReviewDetailDto(Review review) {
+        return ReviewResDto.ReviewDetailDto.builder()
+                .reviewId(review.getId())
+                .storeName(review.getStore().getName())
+                .rating(review.getRating())
+                .content(review.getContent())
+                .createdAt(review.getCreatedAt())
+                .build();
+    }
+
+    public static ReviewResDto.ReviewDetailListDto toReviewPreviewListDto(Page<Review> reviewPage) {
+        List<ReviewResDto.ReviewDetailDto> reviewDetailList = reviewPage.stream()
+                .map(ReviewConverter::toReviewDetailDto)
+                .collect(Collectors.toList());
+
+        return ReviewResDto.ReviewDetailListDto.builder()
+                .isLast(reviewPage.isLast())
+                .isFirst(reviewPage.isFirst())
+                .totalPage(reviewPage.getTotalPages())
+                .totalElements(reviewPage.getTotalElements())
+                .listSize(reviewDetailList.size())
+                .reviewList(reviewDetailList)
                 .build();
     }
 }

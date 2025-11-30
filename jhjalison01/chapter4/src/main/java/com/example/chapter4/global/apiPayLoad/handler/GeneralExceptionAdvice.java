@@ -4,6 +4,7 @@ import com.example.chapter4.global.apiPayLoad.ApiResponse;
 import com.example.chapter4.global.apiPayLoad.code.BaseErrorCode;
 import com.example.chapter4.global.apiPayLoad.code.GeneralErrorCode;
 import com.example.chapter4.global.apiPayLoad.exception.GeneralException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,6 +47,27 @@ public class GeneralExceptionAdvice {
                                 null
                         )
                 );
+    }
+
+    /**
+     * @CheckPage, @Min 등 유효성 검사 실패 시 발생 (주로 @RequestParam, @PathVariable)
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<Object>> handleConstraintViolationException(
+            ConstraintViolationException ex
+    ) {
+        // 에러 메시지 추출 (ex: "페이지 번호는 1 이상이어야 합니다.")
+        // ConstraintViolationException은 메시지가 조금 복잡하게 나올 수 있어 파싱하거나 그대로 보여줌
+        String errorMessage = ex.getConstraintViolations().stream()
+                .map(violation -> violation.getMessage())
+                .findFirst()
+                .orElse("유효성 검사 실패");
+
+        return ResponseEntity.status(GeneralErrorCode.VALID_FAIL.getStatus())
+                .body(ApiResponse.onFailure(
+                        GeneralErrorCode.VALID_FAIL,
+                        errorMessage // 구체적인 실패 사유 전달
+                ));
     }
 
     // 그 외의 정의되지 않은 모든 예외 처리

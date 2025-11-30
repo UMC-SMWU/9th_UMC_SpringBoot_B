@@ -8,6 +8,7 @@ import com.example.chapter4.domain.review.service.command.ReviewCommandService;
 import com.example.chapter4.domain.review.service.query.ReviewQueryService;
 import com.example.chapter4.global.apiPayLoad.ApiResponse;
 import com.example.chapter4.global.apiPayLoad.code.GeneralSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,12 @@ public class ReviewController implements ReviewControllerDocs{
     private final ReviewQueryService reviewQueryService;
 
     @GetMapping("member/{memberId}")
-    public ApiResponse<List<ReviewResDto.ReviewDetailDto>> getMyReviews(
+    public ApiResponse<ReviewResDto.ReviewDetailListDto> getMyReviews(
             @PathVariable Long memberId,
-            @ModelAttribute ReviewSearchCondition condition // Query Parameter를 DTO로 바인딩
+            @Valid @ModelAttribute ReviewSearchCondition condition // Query Parameter를 DTO로 바인딩
     ) {
 
-        List<ReviewResDto.ReviewDetailDto> reviews = reviewQueryService.getMemberReviews(memberId, condition);
+        ReviewResDto.ReviewDetailListDto reviews = reviewQueryService.getMemberReviews(memberId, condition);
         return ApiResponse.onSuccess(GeneralSuccessCode.OK,reviews);
     }
 
