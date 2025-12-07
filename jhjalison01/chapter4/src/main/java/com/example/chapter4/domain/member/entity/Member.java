@@ -6,6 +6,7 @@ import com.example.chapter4.domain.member.enums.Gender;
 import com.example.chapter4.domain.member.enums.Status;
 import com.example.chapter4.domain.mission.entity.mapping.MemberMission;
 import com.example.chapter4.domain.review.entity.Review;
+import com.example.chapter4.global.auth.enums.Role;
 import com.example.chapter4.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,8 +41,8 @@ public class Member extends BaseEntity {
     @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
-    @Column(name = "location", nullable = false)
-    private String location;
+//    @Column(name = "location")
+//    private String location;
 
     @Column(name = "address", nullable = false)
     private String address;
@@ -49,7 +50,7 @@ public class Member extends BaseEntity {
     @Column(name = "point", nullable = false)
     private int point;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone_num", nullable = false)
@@ -59,8 +60,14 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "inactive_data", nullable = false)
+    @Column(name = "inactive_data")
     private LocalDateTime inactiveData;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberFood> memberFoodList = new ArrayList<>();
